@@ -152,7 +152,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (UITableView*) tableView {
-    return (UITableView*)[self.segmentedView contentView];
+    return (UITableView*)[[self segmentedView] contentView];
 }
 
 #pragma mark -
@@ -161,7 +161,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) setTableView:(UITableView *)newTableView {
     [newTableView setDirectionalLockEnabled: YES];
-    [self.segmentedView setContentView: newTableView];
+    [[self segmentedView] setContentView: newTableView];
 }
 
 @end

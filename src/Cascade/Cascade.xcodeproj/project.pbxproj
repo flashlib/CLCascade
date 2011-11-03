@@ -346,6 +346,10 @@
 		B6EA8CBA1456D25200817157 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				DSTROOT = /tmp/Cascade.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cascade/Cascade-Prefix.pch";
@@ -361,6 +365,10 @@
 		B6EA8CBB1456D25200817157 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				DSTROOT = /tmp/Cascade.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cascade/Cascade-Prefix.pch";

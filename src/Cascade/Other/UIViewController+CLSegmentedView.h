@@ -15,6 +15,6 @@
 @property (nonatomic, retain, readonly) UIView* footerView;
 @property (nonatomic, retain, readonly) UIView* contentView;
 
-@property (nonatomic, retain) CLSegmentedView* segmentedView;
+- (CLSegmentedView*) segmentedView;
 
 @end

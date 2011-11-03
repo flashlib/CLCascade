@@ -667,13 +667,22 @@
 - (void) setProperSizesForLodedPages:(UIInterfaceOrientation)interfaceOrientation {
     [_pages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (obj != [NSNull null]) {
+            // resize the container
             UIView* view = ((UIViewController*)obj).clContainerView;
+            // but also the subview. I think there is something more cool with Autoresizing Masks, but not sure.
+            // TODO : check the property of CLSegmentedView because this is the view which cause problem
+            UIView* view2 = ((UIViewController*)obj).view;
+
             CGRect rect = view.frame;
             CGPoint point = [self calculateOriginOfPageAtIndex: idx];
             CGSize size = [self calculatePageSize: obj];
             rect.size = size;
             rect.origin = point;
             [view setFrame:rect];
+            
+            rect = view2.frame;
+            rect.size = size;
+            [view2 setFrame:rect];
         }
     }];
 }

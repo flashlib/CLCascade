@@ -11,7 +11,6 @@
 
 @implementation UIViewController (UIViewController_CLSegmentedView)
 
-@dynamic segmentedView;
 @dynamic headerView;
 @dynamic footerView;
 @dynamic contentView;

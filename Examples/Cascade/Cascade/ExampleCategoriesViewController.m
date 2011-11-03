@@ -7,7 +7,7 @@
 //
 
 #import "ExampleCategoriesViewController.h"
-
+#import "ExampleUITableViewController.h"
 
 @implementation ExampleCategoriesViewController
 
@@ -108,9 +108,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // if you select row, then create and push custom UIViewController
-    ExampleTableViewController* rootTableViewController = [[ExampleTableViewController alloc] initWithTableViewStyle:UITableViewStylePlain size:CLViewSizeNormal];
+    if (indexPath.row%2) {
+        ExampleUITableViewController* rootTableViewController = [[ExampleUITableViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.cascadeNavigationController setRootViewController:rootTableViewController animated:YES];   
+    }
+    else
+    {
+        ExampleTableViewController* rootTableViewController = [[ExampleTableViewController alloc] initWithTableViewStyle:UITableViewStylePlain size:CLViewSizeNormal];
     [self.cascadeNavigationController setRootViewController:rootTableViewController animated:YES];
-    
+    }
 }
 
 @end

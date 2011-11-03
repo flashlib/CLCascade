@@ -451,9 +451,7 @@ static char containerViewKey;
 - (id) initWithSize:(CLViewSize)size {
     self = [self init];
     if (self) {
-        NSLog(@"%d", size);
         self.clViewSize = size;
-        NSLog(@"after %d", self.clViewSize);
         self.showRoundedCorners = NO;
     }
     return self;   
