@@ -475,7 +475,12 @@ static char containerViewKey;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (UIView *) leftBorderShadowView {
-    return [[CLBorderShadowView alloc] init];
+    return [[CLBorderShadowView alloc] initWithType:CLShadowLeft];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (UIView *) rightBorderShadowView {
+    return [[CLBorderShadowView alloc] initWithType:CLShadowRight];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -493,12 +498,36 @@ static char containerViewKey;
     [self.clContainerView addLeftBorderShadowView:shadowView 
                                                withWidth:width];    
     
-    [self.clContainerView setShadowOffset:offset];
+    [self.clContainerView setShadowOffsetLeft:offset];
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) addRightBorderShadowWithWidth:(CGFloat)width andOffset:(CGFloat)offset {
+    UIView* shadowView = [self rightBorderShadowView];
+    
+    if (!self.clContainerView) {
+        // create a container view (for shadow stuff)
+        CLContainerView *contV = [[CLContainerView alloc] initWithFrame:self.view.frame];
+        contV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        // set the container
+        self.clContainerView = contV;
+    }
+    
+    [self.clContainerView addRightBorderShadowView:shadowView 
+                                        withWidth:width];    
+    
+    [self.clContainerView setShadowOffsetRight:offset];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) removeLeftBorderShadow {
     [self.clContainerView removeLeftBorderShadowView];    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) removeRightBorderShadow {
+    [self.clContainerView removeRightBorderShadowView];    
 }
 
 #pragma mark CLViewControllerDelegate

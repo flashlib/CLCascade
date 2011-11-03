@@ -21,6 +21,18 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (id) initWithType:(CLShadow)type {
+    self = [super init];
+    if (self) {
+        _currentShadow = type;
+        [self setBackgroundColor:[UIColor clearColor]];
+    }
+    return self;
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) drawRect:(CGRect)rect {
     
     CGFloat colors [] = { 
@@ -34,8 +46,15 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
         
-    CGPoint startPoint = CGPointMake(0, CGRectGetMidY(rect));
-    CGPoint endPoint = CGPointMake(CGRectGetMaxX(rect), CGRectGetMidY(rect));
+    CGPoint startPoint, endPoint;
+    startPoint = CGPointMake(0, CGRectGetMidY(rect));
+    endPoint = CGPointMake(CGRectGetMaxX(rect), CGRectGetMidY(rect));
+    
+    if (_currentShadow == CLShadowRight){
+        CGPoint oldPoint = endPoint;
+        endPoint = startPoint;
+        startPoint = oldPoint;
+    }
     
     CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
     CGGradientRelease(gradient), gradient = NULL;

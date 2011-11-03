@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef enum {
+    CLShadowLeft = 0,
+    CLShadowRight
+}CLShadow;
 
 @interface CLBorderShadowView : UIView
-
+{
+    CLShadow _currentShadow;
+}
+- (id) initWithType:(CLShadow)type;
 @end

@@ -10,8 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation CLContainerView
-@synthesize shadowWidth = _shadowWidth;
-@synthesize shadowOffset = _shadowOffset;
+@synthesize shadowWidthLeft = _shadowWidthLeft;
+@synthesize shadowOffsetLeft = _shadowOffsetLeft;
+@synthesize shadowWidthRight = _shadowWidthRight;
+@synthesize shadowOffsetRight = _shadowOffsetRight;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithFrame:(CGRect)frame
@@ -28,22 +30,45 @@
     
     [self setClipsToBounds: NO];
     
-    if (_shadowWidth != width) {
-        _shadowWidth = width;
+    if (_shadowWidthLeft != width) {
+        _shadowWidthLeft = width;
         [self setNeedsLayout];
         [self setNeedsDisplay];
     }
     
-    if (view != _shadowView) {
-        _shadowView = view;
+    if (view != _shadowViewLeft) {
+        _shadowViewLeft = view;
         
-        [self insertSubview:_shadowView atIndex:0];
+        [self insertSubview:_shadowViewLeft atIndex:0];
         
         [self setNeedsLayout];
         [self setNeedsDisplay];
     }
     
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) addRightBorderShadowView:(UIView *)view withWidth:(CGFloat)width {
+    
+    [self setClipsToBounds: NO];
+    
+    if (_shadowWidthRight != width) {
+        _shadowWidthRight = width;
+        [self setNeedsLayout];
+        [self setNeedsDisplay];
+    }
+    
+    if (view != _shadowViewLeft) {
+        _shadowViewRight = view;
+        
+        [self insertSubview:_shadowViewRight atIndex:0];
+        
+        [self setNeedsLayout];
+        [self setNeedsDisplay];
+    }
+    
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,20 +76,37 @@
     
     [self setClipsToBounds: YES];
     
-    _shadowView = nil;
+    _shadowViewLeft = nil;
     [self setNeedsLayout];
     
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) removeRightBorderShadowView {
+    
+    [self setClipsToBounds: YES];
+    
+    _shadowViewRight = nil;
+    [self setNeedsLayout];
+    
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) layoutSubviews {
     [super layoutSubviews];
     CGRect rect = self.bounds;
 
-    if (_shadowView) {
-        CGRect shadowFrame = CGRectMake(0 - _shadowWidth + _shadowOffset, 0.0, _shadowWidth, rect.size.height);
-        _shadowView.frame = shadowFrame;
+    if (_shadowViewLeft) {
+        CGRect shadowFrame = CGRectMake(0 - _shadowWidthLeft + _shadowOffsetLeft, 0.0, _shadowWidthLeft, rect.size.height);
+        _shadowViewLeft.frame = shadowFrame;
     }
+    
+    if (_shadowViewRight) {
+        CGRect shadowFrame = CGRectMake(rect.size.width + _shadowOffsetRight, 0.0, _shadowWidthRight, rect.size.height);
+        _shadowViewRight.frame = shadowFrame;
+    }
+    
     
     /*if (self.subviews.count > 1) {
         UIView *firstView = [self.subviews objectAtIndex:1];
@@ -84,7 +126,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 -  (void) dealloc {
-    _shadowView = nil;
+    _shadowViewLeft = nil;
+    _shadowViewRight = nil;
 }
 
 @end
