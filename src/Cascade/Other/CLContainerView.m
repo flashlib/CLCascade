@@ -69,6 +69,17 @@
     
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) addMiddleView:(UIView *)view {
+    if (view != _middleView) {
+        _middleView = view;
+        
+        [self insertSubview:_middleView atIndex:0];
+        
+        [self setNeedsLayout];
+        [self setNeedsDisplay];
+    } 
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,6 +102,12 @@
     
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) removeMiddleView {
+    _middleView = nil;
+    [self setNeedsLayout];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) layoutSubviews {
@@ -105,6 +122,14 @@
     if (_shadowViewRight) {
         CGRect shadowFrame = CGRectMake(rect.size.width + _shadowOffsetRight, 0.0, _shadowWidthRight, rect.size.height);
         _shadowViewRight.frame = shadowFrame;
+    }
+    
+    if (_middleView) {
+        CGRect middleFrame = CGRectMake(_shadowOffsetLeft,
+                                        0.0,
+                                        CGRectGetWidth(self.frame)+_shadowOffsetRight-_shadowOffsetLeft,
+                                        rect.size.height);
+        _middleView.frame = middleFrame;
     }
     
     
@@ -128,6 +153,7 @@
 -  (void) dealloc {
     _shadowViewLeft = nil;
     _shadowViewRight = nil;
+    _middleView = nil;
 }
 
 @end

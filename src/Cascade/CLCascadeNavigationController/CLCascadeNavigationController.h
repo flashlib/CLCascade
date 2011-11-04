@@ -88,6 +88,10 @@
 - (void) addRightBorderShadowWithWidth:(CGFloat)width andOffset:(CGFloat)offset;
 - (void) removeRightBorderShadow;
 
+// Middle View methods
+- (void) addMiddleView;
+- (void) removeMiddleView;
+
 /*
  Override this methods to return view which represent left border shadow.
  It could be UIImageView with gradient image or simle UIView, where you can overrider drawRect: method
@@ -95,4 +99,5 @@
  */
 - (UIView *) leftBorderShadowView;
 - (UIView *) rightBorderShadowView;
+- (UIView *) middleView;
 @end

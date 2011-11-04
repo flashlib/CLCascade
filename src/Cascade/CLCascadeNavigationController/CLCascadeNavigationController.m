@@ -484,6 +484,13 @@ static char containerViewKey;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (UIView *) middleView {
+    UIView *view_ = [[UIView alloc] init];
+    view_.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
+    return view_;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) addLeftBorderShadowWithWidth:(CGFloat)width andOffset:(CGFloat)offset {
     UIView* shadowView = [self leftBorderShadowView];
     
@@ -519,6 +526,21 @@ static char containerViewKey;
     [self.clContainerView setShadowOffsetRight:offset];
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) addMiddleView {
+    UIView* middleView = [self middleView];
+    
+    if (!self.clContainerView) {
+        // create a container view (for shadow stuff)
+        CLContainerView *contV = [[CLContainerView alloc] initWithFrame:self.view.frame];
+        contV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        // set the container
+        self.clContainerView = contV;
+    }
+    
+    [self.clContainerView addMiddleView:middleView];
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) removeLeftBorderShadow {
@@ -528,6 +550,11 @@ static char containerViewKey;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) removeRightBorderShadow {
     [self.clContainerView removeRightBorderShadowView];    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) removeMiddleView {
+    [self.clContainerView removeMiddleView];
 }
 
 #pragma mark CLViewControllerDelegate

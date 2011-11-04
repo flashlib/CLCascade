@@ -11,6 +11,7 @@
 @interface CLContainerView : UIView
 {
     UIView* _shadowViewLeft, *_shadowViewRight;
+    UIView *_middleView;
 }
 
 /*
@@ -34,24 +35,35 @@
 @property (nonatomic, assign) CGFloat shadowOffsetRight;
 
 /* 
- * This methoad add left outer shadow view with proper width
+ * This method add left outer shadow view with proper width
  */
 - (void) addLeftBorderShadowView:(UIView *)view withWidth:(CGFloat)width;
 
 /* 
- * This methoad add right outer shadow view with proper width
+ * This method add right outer shadow view with proper width
  */
 - (void) addRightBorderShadowView:(UIView *)view withWidth:(CGFloat)width;
 
+/* 
+ * This method add middle view
+ */
+- (void) addMiddleView:(UIView *)view;
+
 
 /* 
- * This methoad remove left outer shadow
+ * This method remove left outer shadow
  */
 - (void) removeLeftBorderShadowView;
 
 /* 
- * This methoad remove right outer shadow
+ * This method remove right outer shadow
  */
 - (void) removeRightBorderShadowView;
+
+/* 
+ * This method remove middle view
+ */
+- (void) removeMiddleView;
+
 
 @end
