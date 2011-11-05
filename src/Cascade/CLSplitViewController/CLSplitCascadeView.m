@@ -107,6 +107,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    UIView *lastView = [[[[window subviews] lastObject] subviews] lastObject];
+    
+    if([lastView isKindOfClass:NSClassFromString(@"PPAlertView")])
+    {
+        return [lastView hitTest:point withEvent:event];
+    }
+    
     CLCascadeNavigationController* cascadeNavigationController = _splitCascadeViewController.cascadeNavigationController;
     UIView* navigationView = [cascadeNavigationController view];
 
