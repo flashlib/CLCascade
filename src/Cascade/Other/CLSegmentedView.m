@@ -70,8 +70,11 @@
              UIViewAutoresizingFlexibleTopMargin | 
              UIViewAutoresizingFlexibleWidth | 
              UIViewAutoresizingFlexibleHeight];
+            if (_headerView)
+                [_roundedCornersView insertSubview:_contentView belowSubview:_headerView];
+            else
+                [_roundedCornersView addSubview: _contentView];
             
-            [_roundedCornersView addSubview: _contentView];
             [self setNeedsLayout];
         }
     }
@@ -93,7 +96,10 @@
              UIViewAutoresizingFlexibleTopMargin];
             [_headerView setUserInteractionEnabled:YES];
             
-            [_roundedCornersView addSubview: _headerView];
+            if (_contentView)
+                [_roundedCornersView insertSubview:_headerView aboveSubview:_contentView];
+            else
+                [_roundedCornersView addSubview: _headerView];
             [self setNeedsLayout];
         }
     }
@@ -113,7 +119,10 @@
              UIViewAutoresizingFlexibleBottomMargin];
             [_footerView setUserInteractionEnabled:YES];
             
-            [_roundedCornersView addSubview: _footerView];
+            if (_contentView)
+                [_roundedCornersView insertSubview:_footerView aboveSubview:_contentView];
+            else
+                [_roundedCornersView addSubview: _footerView];
             [self setNeedsLayout];
         }
     }
