@@ -63,6 +63,9 @@
  */
 - (UIViewController*) firstVisibleViewController;
 
+/*
+ Pop the last page*/
+- (void) popLastPageAnimated:(BOOL) animated;
 
 @end
 

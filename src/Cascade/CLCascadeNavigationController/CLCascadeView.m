@@ -159,8 +159,26 @@
         frame.origin.x = 0.0f;
     }
     
-    // set new page frame
-    [newPage setFrame: frame];
+    // animation, from left to right
+    
+    if (animated && (fromPage == nil) && (([_scrollView contentOffset].x >= 0))) {
+        
+        // start frame animation
+        CGRect startRect = CGRectMake(origin.x - size.width, origin.y, size.width, size.height);
+        // set new page fram
+        [newPage setFrame: startRect];
+        
+        // animation
+        [UIView animateWithDuration:0.15 
+                         animations: ^{
+                             // set new page frame aimate
+                             [newPage setFrame: frame];
+                             
+                         }];
+    } else {
+        // set new page frame
+        [newPage setFrame: frame];
+    }
     // add page to array of pages    
     [_pages addObject: newPageController];
     // update content size
@@ -223,7 +241,7 @@
             // animate pop
             [UIView animateWithDuration:0.4f 
                              animations:^ {
-                                 [item setAlpha: 0.0f];
+                                 [((UIViewController*)item).view setAlpha: 0.0f];
                              }
                              completion:^(BOOL finished) {
                                  // unload and remove page

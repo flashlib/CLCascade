@@ -239,7 +239,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) setRootViewController:(UIViewController*)viewController animated:(BOOL)animated {
     // pop all pages
-    [_cascadeView popAllPagesAnimated: animated];
+    [_cascadeView popAllPagesAnimated: NO];
     // remove all controllers
     [self removeAllPageViewControllers];
     // add root view controller
@@ -348,7 +348,7 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void) popPagesFromLastIndexTo:(NSInteger)toIndex {
+- (void) popPagesFromLastIndexTo:(NSInteger)toIndex animated:(BOOL)animated {
     if (toIndex < 0) toIndex = 0;
     
     // index of last page
@@ -357,23 +357,33 @@
     NSEnumerator* enumerator = [_viewControllers reverseObjectEnumerator];
     // enumarate pages
     while ([enumerator nextObject] && _viewControllers.count > toIndex+1) {
-
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
         UIViewController* viewController = [_viewControllers objectAtIndex:index];
         [viewController willMoveToParentViewController:nil];
-        #endif
-
+#endif
+        
         // pop page at index
-        [_cascadeView popPageAtIndex:index animated:NO];
+        [_cascadeView popPageAtIndex:index animated:animated];
         [_viewControllers removeLastObject];
-
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
         [viewController removeFromParentViewController];
-        #endif
+#endif
         
         index--;
     }
     
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) popPagesFromLastIndexTo:(NSInteger)toIndex {
+    [self popPagesFromLastIndexTo:toIndex animated:NO];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) popLastPageAnimated:(BOOL) animated {
+    [self popPagesFromLastIndexTo:[_viewControllers count] - 2 animated:animated];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
