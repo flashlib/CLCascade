@@ -81,9 +81,21 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+    [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
+    
     [_cascadeView updateContentLayoutToInterfaceOrientation:interfaceOrientation duration:duration];
+    
+    for (UIViewController *controller in _viewControllers)
+        [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
 }
 
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    for (UIViewController *controller in _viewControllers)
+        [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
 
 #pragma mark -
 #pragma mark Setters & getters
