@@ -81,6 +81,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
+    [(CLSplitCascadeView*)self.view setIsRotating:YES];
+
     return YES;
 }
 
@@ -88,6 +90,24 @@
     if ([_cascadeNavigationController respondsToSelector:@selector(willAnimateRotationToInterfaceOrientation:duration:)]) {
         [_cascadeNavigationController willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
     }
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [_cascadeNavigationController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [(CLSplitCascadeView*)self.view setIsRotating:NO];
+}
+#pragma mark - Present Controller
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) presentModalControllerFromMiddle:(UIViewController*)controller {
+    [(CLSplitCascadeView*)self.view presentModalControllerFromMiddle:controller];  
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) dismissMiddleViewController {
+   [(CLSplitCascadeView*)self.view dismissMiddleViewController];  
 }
 
 #pragma mark -
@@ -129,6 +149,8 @@
         _cascadeNavigationController = viewController;
         [(CLSplitCascadeView*)self.view setCascadeView: viewController.view];
     
+        viewController.splitCascadeController = self;
+        
         #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
         [self addChildViewController:viewController];
         [viewController didMoveToParentViewController:self];

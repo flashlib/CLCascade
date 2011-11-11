@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class CLSplitCascadeViewController;
-
+@class CLShadowBlurredView;
 
 @interface CLSplitCascadeView : UIView {
     // views
@@ -19,12 +20,30 @@
     // background
     UIView*     _backgroundView;
 
+    // Container
+    UIView *_containerView;
+    
     // divider
     UIView*     _dividerView;
     UIImage*    _verticalDividerImage;
     CGFloat     _dividerWidth;
     
+    CALayer *_containerLayer;
+    CALayer *_leftLayer;
+    CALayer *_rightLayer;
+    UIView *_backgroundBlackWhenModalView;
+    CLShadowBlurredView *_backgroundModalView;
+    
+    BOOL _isOpen;
+    BOOL _isAnimating;
+
+    UIViewController *_presentedController;
+    BOOL _isKeyboardVisible;
+    CGSize _keyboardSize;
 }
+
+- (void) presentModalControllerFromMiddle:(UIViewController*)controller;
+- (void) dismissMiddleViewController;
 
 @property (nonatomic, strong) IBOutlet CLSplitCascadeViewController* splitCascadeViewController;
 
@@ -48,5 +67,11 @@
  */
 @property (nonatomic, strong) UIView* cascadeView;
 
+/*
+ * Container view. Contains all the views
+ */
+@property (nonatomic, strong) UIView* containerView;
+
+@property BOOL isRotating;
 
 @end

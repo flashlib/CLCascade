@@ -13,6 +13,7 @@
 
 #import <objc/runtime.h>
 #import "CLContainerView.h"
+#import "CLSplitCascadeViewController.h"
 
 @interface CLCascadeNavigationController (Private)
 - (void) addPagesRoundedCorners;
@@ -25,6 +26,7 @@
 
 @synthesize viewControllers = _viewControllers;
 @synthesize leftInset, widerLeftInset;
+@synthesize splitCascadeController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -419,6 +421,17 @@
     }
 }
 
+#pragma mark - Present Controller
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) presentModalViewControllerFromMiddle:(UIViewController*)controller {
+    controller.cascadeNavigationController = self;
+    [self.splitCascadeController presentModalControllerFromMiddle:controller];
+}
+
+- (void) dismissMiddleViewController {
+    [self.splitCascadeController dismissMiddleViewController];
+}
 @end
 
 @implementation UIViewController (CLCascade)
@@ -426,6 +439,7 @@ static char cascadeNavigationControllerKey;
 static char viewSizeKey;
 static char showRoundedCornersKey;
 static char containerViewKey;
+static char sizeForMiddleModalViewKey;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) setCascadeNavigationController:(CLCascadeNavigationController *)cascadeNavigationController {
@@ -467,6 +481,17 @@ static char containerViewKey;
 - (BOOL) showRoundedCorners {
     NSNumber *numberShowCorners = objc_getAssociatedObject( self, &showRoundedCornersKey );
     return [numberShowCorners intValue];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) setSizeForMiddleModalView:(CGSize)sizeForMiddleModalView {
+    objc_setAssociatedObject( self, &sizeForMiddleModalViewKey, NSStringFromCGSize(sizeForMiddleModalView), OBJC_ASSOCIATION_RETAIN );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (CGSize)sizeForMiddleModalView {
+    NSString *stringSize = objc_getAssociatedObject( self, &sizeForMiddleModalViewKey );
+    return CGSizeFromString(stringSize);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

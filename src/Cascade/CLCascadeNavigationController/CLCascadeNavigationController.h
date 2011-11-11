@@ -12,6 +12,7 @@
 #import <Cascade/CLCustomViewControllers/CLViewControllerDelegate.h>
 
 @class CLContainerView;
+@class CLSplitCascadeViewController;
 
 @interface CLCascadeNavigationController : UIViewController <CLCascadeViewDataSource, CLCascadeViewDelegate> {
     // array of all view controllers
@@ -26,6 +27,11 @@
  List of CLViewControllers on stock.
  */
 @property (nonatomic, strong, readonly) NSMutableArray* viewControllers;
+
+/*
+ The split parent
+ */
+@property (nonatomic, strong) CLSplitCascadeViewController *splitCascadeController;
 
 /*
  * Left inset of normal size pages from left boarder
@@ -67,6 +73,16 @@
  Pop the last page*/
 - (void) popLastPageAnimated:(BOOL) animated;
 
+/*
+ Present a view in middle
+ */
+- (void) presentModalViewControllerFromMiddle:(UIViewController*)controller;
+
+/*
+ Dismiss the modal view
+ */
+- (void) dismissMiddleViewController;
+
 @end
 
 @interface UIViewController (CLCascade) <CLViewControllerDelegate>
@@ -79,6 +95,8 @@
 
 @property (nonatomic, assign) CLViewSize clViewSize;
 @property (nonatomic, assign) BOOL showRoundedCorners; // TODO : check the utility ... !
+
+@property (nonatomic, assign) CGSize sizeForMiddleModalView;
 
 // method used to push (animated) new UIViewController on Cascade stack
 - (void) pushDetailViewController:(UIViewController *)viewController animated:(BOOL)animated;

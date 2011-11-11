@@ -10,6 +10,7 @@
 
 @class CLCategoriesViewController;
 @class CLCascadeNavigationController;
+@class CLSplitCascadeView;
 
 @interface CLSplitCascadeViewController : UIViewController {
     CLCategoriesViewController*     _categoriesViewController;
@@ -21,5 +22,7 @@
 
 - (void) setBackgroundView:(UIView*)backgroundView;
 - (void) setDividerImage:(UIImage*)image;
+- (void) presentModalControllerFromMiddle:(UIViewController*)controller;
+- (void) dismissMiddleViewController;
 
 @end
