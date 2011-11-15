@@ -159,29 +159,31 @@
         frame.origin.x = 0.0f;
     }
     
-    // animation, from left to right
+    void (^animBlock)(void) = ^{
+        // set new page frame aimate
+        [newPageController viewWillAppear:animated];    
+        [newPage setFrame: frame];
+        [newPageController viewDidAppear:animated]; 
+    };
     
-    if (animated && (fromPage == nil) && (([_scrollView contentOffset].x >= 0))) {
+    // animation, from left to right
+    if (animated && (fromPage == nil) && ([_scrollView contentOffset].x >= 0)) {
         
         // start frame animation
         CGRect startRect = CGRectMake(origin.x - size.width, origin.y, size.width, size.height);
-        // set new page fram
+        // set new page frame
         [newPage setFrame: startRect];
         
         // animation
         [UIView animateWithDuration:0.15 
-                         animations: ^{
-                             // set new page frame aimate
-                             [newPageController viewWillAppear:YES];                             
-                             [newPage setFrame: frame];
-                             [newPageController viewDidAppear:YES];                             
-                         }];
-    } else {
-        // set new page frame
-        [newPageController viewWillAppear:NO];                             
-        [newPage setFrame: frame];
-        [newPageController viewDidAppear:NO];                             
+                         animations: animBlock];
     }
+    else
+    {
+        // set the frame outside the animation block, because some elements may move because of layoutSubviews which are englobed into the animation block
+        animBlock();  
+    }
+    
     // add page to array of pages    
     [_pages addObject: newPageController];
     // update content size
@@ -240,28 +242,25 @@
     // check if page is unloaded
     if (item != [NSNull null]) {
         
-        if (animated) {
-            // animate pop
-            [UIView animateWithDuration:0.4f 
-                             animations:^ {
-                                 [((UIViewController*)item).view setAlpha: 0.0f];
-                             }
-                             completion:^(BOOL finished) {
-                                 // unload and remove page
-                                 [self unloadPage:item remove:YES];
-                                 // update edge inset
-                                 [self setProperEdgeInset: NO];
-                                 // send delegate message
-                                 [self didPopPageAtIndex: index];
-                             }];
-            
-        } else {
+        void (^animBlock)(BOOL) = ^(BOOL finished){
             // unload and remove page
             [self unloadPage:item remove:YES];
             // update edge inset
             [self setProperEdgeInset: NO];
             // send delegate message
             [self didPopPageAtIndex: index];
+        };
+        
+        if (animated) {
+            // animate pop
+            [UIView animateWithDuration:0.4f 
+                             animations:^ {
+                                 [((UIViewController*)item).view setAlpha: 0.0f];
+                             }
+                             completion:animBlock];
+            
+        } else {
+            animBlock(YES);
         }
     }
     

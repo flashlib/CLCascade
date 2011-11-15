@@ -253,7 +253,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) setRootViewController:(UIViewController*)viewController animated:(BOOL)animated {
     // pop all pages
-    [_cascadeView popAllPagesAnimated: NO];
+    [_cascadeView popAllPagesAnimated: animated];
     // remove all controllers
     [self removeAllPageViewControllers];
     // add root view controller
