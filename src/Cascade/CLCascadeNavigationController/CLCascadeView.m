@@ -172,12 +172,15 @@
         [UIView animateWithDuration:0.15 
                          animations: ^{
                              // set new page frame aimate
+                             [newPageController viewWillAppear:YES];                             
                              [newPage setFrame: frame];
-                             
+                             [newPageController viewDidAppear:YES];                             
                          }];
     } else {
         // set new page frame
+        [newPageController viewWillAppear:NO];                             
         [newPage setFrame: frame];
+        [newPageController viewDidAppear:NO];                             
     }
     // add page to array of pages    
     [_pages addObject: newPageController];
@@ -300,17 +303,23 @@
                 CGSize pageSize = [self calculatePageSize: viewC];
                 CGRect pageFrame = CGRectMake(index * _pageWidth, 0.0f, pageSize.width, pageSize.height);
                 [view setFrame: pageFrame];
+                [viewC.view setFrame: pageFrame];
+
                 // replace in array of pages
                 [_pages replaceObjectAtIndex:index withObject:viewC];
 
                 // calculete direction of movement (if move left add view at index 0 else add at last position)
                 if ((_scrollView.contentOffset.x + _scrollView.contentInset.left) > index * _pageWidth) {
                     // add subview
+                    [viewC viewWillAppear:NO];
                     [_scrollView insertSubview:view atIndex:0];
+                    [viewC viewDidAppear:NO];
                 }
                 else {
                     // add subview
+                    [viewC viewWillAppear:NO];
                     [_scrollView addSubview:view];
+                    [viewC viewDidAppear:NO];
                 }
                 
                 
@@ -644,7 +653,9 @@
     // if page exist
     if (index != NSNotFound) {
         // remove from superview
+        [page viewWillDisappear:NO];
         [page.clContainerView removeFromSuperview];
+        [page viewDidDisappear:NO];
         
         // send message to delegate
         [self didUnloadPage:page];        
