@@ -63,13 +63,6 @@
         _contentView = contentView;
 
         if (_contentView) {
-            [_contentView setAutoresizingMask:
-             UIViewAutoresizingFlexibleLeftMargin | 
-             UIViewAutoresizingFlexibleRightMargin | 
-             UIViewAutoresizingFlexibleBottomMargin | 
-             UIViewAutoresizingFlexibleTopMargin | 
-             UIViewAutoresizingFlexibleWidth | 
-             UIViewAutoresizingFlexibleHeight];
             if (_headerView)
                 [_roundedCornersView insertSubview:_contentView belowSubview:_headerView];
             else
