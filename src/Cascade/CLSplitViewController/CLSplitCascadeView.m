@@ -289,10 +289,15 @@
 
     UIWindow* window = [UIApplication sharedApplication].keyWindow;
     UIView *lastView = [[[[window subviews] lastObject] subviews] lastObject];
+    UIView *normalBehaviourView = [super hitTest:point withEvent:event];
     
-    if([lastView isKindOfClass:NSClassFromString(@"PPAlertView")])
+    if([lastView isKindOfClass:NSClassFromString(@"PPAlertView")] 
+       || [normalBehaviourView isKindOfClass:NSClassFromString(@"UINavigationButton")] 
+       || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPTransportButton")]
+       || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPDetailSlider")]
+       || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPVideoView")])
     {
-        return [lastView hitTest:point withEvent:event];
+        return normalBehaviourView;
     }
     
     if (_isOpen) {
