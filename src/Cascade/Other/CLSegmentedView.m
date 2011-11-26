@@ -166,6 +166,7 @@
         
         CGRect newHeaderViewFrame = CGRectMake(0.0, 0.0, viewWidth, headerHeight);
         [_headerView setFrame: newHeaderViewFrame];
+        [_headerView setNeedsLayout];
     }
     
     if (_footerView) {
@@ -174,6 +175,7 @@
         
         CGRect newFooterViewFrame = CGRectMake(0.0, footerY, viewWidth, footerHeight);
         [_footerView setFrame: newFooterViewFrame];
+        [_footerView setNeedsLayout];
     }
     
     [_contentView setFrame: CGRectMake(0.0, headerHeight, viewWidth, viewHeight - headerHeight - footerHeight)];
