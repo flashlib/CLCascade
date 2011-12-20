@@ -1,8 +1,16 @@
 CLCascade
 =========
 
-CLCascade is a library to create twitter-like UI in iPad apps created by AppUnite.com TEAM.
-If you need any help please contact us at [office@appunite.com][]
+CLCascade is originally a library to create twitter-like UI in iPad apps created by AppUnite.com TEAM.
+
+I created this fork for a very good reason : be able to push any type of controller which inherits from UIViewController, and not only CLViewController.
+If you need any help please contact me at [marian@ipup.pro][]
+
+Here are the differences from the original fork :
+- Push any UIViewController
+- Shadow added on the left and the right of the panels
+- iOS 5 specific bug correction with freezing interface
+- New way to present modal view controller by opening the parent view
 
 
 Libraries
@@ -21,15 +29,10 @@ Screenshots:
 ![Screenshot1](http://farm7.static.flickr.com/6088/6080286077_ec02a4d727_b.jpg)
 ![Screenshot2](http://farm7.static.flickr.com/6185/6080285057_5f4c96a41c_b.jpg)
 
-Roadmap
+Integration example ([iAddict v2][])
 ===============
-
-Because of the great interest in the project CLCascade we want to inform you that we are planning further 
-development of the project, this is what we want to do in near future:
-
- * build a framework on top of CLCascade
- * some bugfixes that we found during testing the CLCascade
- * write documentation
+![Screenshot1](http://f.cl.ly/items/0x3E3o2g23441H2o1803/photo%201-11.PNG)
+![Screenshot2](http://f.cl.ly/items/222m2X311T411w082L2l/photo%202-12.PNG)
 
 Authors
 =======
@@ -38,5 +41,10 @@ AppUnite.com
 
 - Emil Wojtaszek
 
+iPuP
+
+- Marian Paul
+
 [Screencast]: http://www.youtube.com/watch?v=XFtc1ksqOmU
-[office@appunite.com]: office@appunite.com
+[iAddict v2]: http://itunes.apple.com/fr/app/iaddict-v2/id473749663?mt=8
+[marian@ipup.pro]: marian@ipup.pro
