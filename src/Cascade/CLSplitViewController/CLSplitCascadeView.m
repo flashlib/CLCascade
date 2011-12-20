@@ -548,7 +548,8 @@ CGMutablePathRef createRoundedRectForRect(CGRect rect, CGFloat radius) {
 
 - (void) drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGColorRef shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6].CGColor;
+    UIColor *color = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
+    CGColorRef shadowColor = color.CGColor;
     
     CGContextSetShadowWithColor(context, CGSizeMake(0.0, 1.0), OFFSET_SHADOW, shadowColor);
     CGContextSetFillColorWithColor(context, shadowColor);

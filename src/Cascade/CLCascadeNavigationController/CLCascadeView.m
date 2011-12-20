@@ -94,7 +94,8 @@
 
         _scrollView = [[CLScrollView alloc] init]; // frame will be set in setter of _leftInset
         [_scrollView setDelegate: self];
-        
+        [_scrollView setPagingEnabled: YES];
+
         self.leftInset = DEFAULT_LEFT_INSET;
         self.widerLeftInset = DEFAULT_WIDER_LEFT_INSET;
         self.pullToDetachPages = YES;
@@ -815,8 +816,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    // set paging enabled (bug fix with auto scrolling when setContentOffset in pushView:)
-    [_scrollView setPagingEnabled: YES];
+
 }
 
 
@@ -848,8 +848,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (_flags.isDetachPages) _flags.isDetachPages = NO;
-    [_scrollView setPagingEnabled: NO];
-
 }
 
 
