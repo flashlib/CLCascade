@@ -291,11 +291,22 @@
     UIView *lastView = [[[[window subviews] lastObject] subviews] lastObject];
     UIView *normalBehaviourView = [super hitTest:point withEvent:event];
     
+    UIView *testView = normalBehaviourView.superview;
+    BOOL foundAdMob = NO;
+    while (testView.superview) {
+        if ([testView isKindOfClass:NSClassFromString(@"GADBannerView")]) {
+            foundAdMob = YES;
+            break;
+        }
+        testView = testView.superview;
+    }
+    
     if([lastView isKindOfClass:NSClassFromString(@"PPAlertView")] 
        || [normalBehaviourView isKindOfClass:NSClassFromString(@"UINavigationButton")] 
        || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPTransportButton")]
        || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPDetailSlider")]
-       || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPVideoView")])
+       || [normalBehaviourView isKindOfClass:NSClassFromString(@"MPVideoView")]
+       || foundAdMob)
     {
         return normalBehaviourView;
     }
