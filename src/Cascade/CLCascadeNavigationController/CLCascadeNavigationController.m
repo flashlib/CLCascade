@@ -300,7 +300,7 @@
 - (UIViewController*) firstVisibleViewController {
     NSInteger index = [_cascadeView indexOfFirstVisibleView: YES];
 
-    if (index != NSNotFound) {
+    if (index != NSNotFound && index < _viewControllers.count) {
         return [_viewControllers objectAtIndex: index];
     }
     
@@ -314,7 +314,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) addRoundedCorner:(UIRectCorner)rectCorner toPageAtIndex:(NSInteger)index {
     
-    if (index != NSNotFound) {
+    if (index != NSNotFound && index < _viewControllers.count) {
         UIViewController* viewController = [_viewControllers objectAtIndex: index];
         if ([viewController showRoundedCorners]) {
             CLSegmentedView* view = (CLSegmentedView*)viewController.view;

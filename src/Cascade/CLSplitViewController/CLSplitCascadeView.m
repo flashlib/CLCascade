@@ -115,12 +115,42 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (UIImage*) getImageFromCurrentContext {
-    UIGraphicsBeginImageContext(self.bounds.size);
+    
+    static CGFloat scale = -1.0;
+	
+	if (scale<0.0) {
+		UIScreen *screen = [UIScreen mainScreen];
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0) {
+			scale = [screen scale];
+		}
+		else {
+			scale = 0.0;	// mean use old api
+		}
+	}
+	if (scale>0.0) {
+		UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, scale);
+	}
+	else {
+		UIGraphicsBeginImageContext(self.bounds.size);
+	}
+
     [_containerView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return viewImage;
+}
+
+- (UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect {
+    rect.size.height = rect.size.height * [image scale];
+    rect.size.width = rect.size.width * [image scale];
+    rect.origin.x = rect.origin.x * [image scale];
+    rect.origin.y = rect.origin.y * [image scale];
+    CGImageRef sourceImageRef = [image CGImage];
+    CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:[image scale] orientation:[image imageOrientation]];
+    CGImageRelease(newImageRef);
+    return newImage;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,15 +185,14 @@
     _leftLayer.frame = leftRect;
     _rightLayer.frame = rightRect;
     
-    CGImageRef leftImage = CGImageCreateWithImageInRect(screenImage.CGImage, leftRect);
+    CGImageRef leftImage = [self imageFromImage:screenImage inRect:leftRect].CGImage;
     _leftLayer.contents = (__bridge id)leftImage;
-    CGImageRelease(leftImage);
     
     [_containerLayer addSublayer:_leftLayer];
     
-    CGImageRef rightImage = CGImageCreateWithImageInRect(screenImage.CGImage, rightRect);
+    CGImageRef rightImage = [self imageFromImage:screenImage inRect:rightRect].CGImage;
     _rightLayer.contents = (__bridge id)rightImage;
-    CGImageRelease(rightImage);
+
     [_containerLayer addSublayer:_rightLayer];
     
     [self openLayersAnimated:animated];
@@ -409,15 +438,15 @@
     
     [self openViewAnimated:YES];
     
-    _backgroundBlackWhenModalView = [[UIView alloc] initWithFrame:self.bounds];
+    //_backgroundBlackWhenModalView = [[UIView alloc] initWithFrame:self.bounds];
     _backgroundBlackWhenModalView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-    [self addSubview:_backgroundBlackWhenModalView];
+    //[self addSubview:_backgroundBlackWhenModalView];
     _backgroundBlackWhenModalView.alpha = 0.0;
     _backgroundBlackWhenModalView.userInteractionEnabled = YES;
     
     _backgroundModalView = [[CLShadowBlurredView alloc] initWithFrame:controller.view.frame];
     [self addSubview:_backgroundModalView];
-
+    
     controller.view.alpha = _backgroundModalView.alpha = 0.5;
     controller.view.transform = _backgroundModalView.transform = CGAffineTransformMakeScale(0.8, 0.8);
     
@@ -553,26 +582,33 @@ CGMutablePathRef createRoundedRectForRect(CGRect rect, CGFloat radius) {
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         self.autoresizingMask = UIViewAutoresizingNone;
+        
+        self.layer.shadowOffset = CGSizeZero;
+        self.layer.shadowOpacity = 0.75f;
+        self.layer.shadowRadius = 10.0f;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, OFFSET_SHADOW, 0.0)].CGPath;
+        self.clipsToBounds = NO; 
     }
     return self;
 }
 
 - (void) drawRect:(CGRect)rect {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    UIColor *color = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
-    CGColorRef shadowColor = color.CGColor;
-    
-    CGContextSetShadowWithColor(context, CGSizeMake(0.0, 1.0), OFFSET_SHADOW, shadowColor);
-    CGContextSetFillColorWithColor(context, shadowColor);
-    
-    CGPathRef roundedRectPath = createRoundedRectForRect(CGRectInset(rect, OFFSET_SHADOW, OFFSET_SHADOW), 6.0);
-    
-    for (int i = 0 ; i < 6 ; i ++)
-    {
-        CGContextAddPath(context, roundedRectPath);
-        CGContextFillPath(context);
-    }
-    CGPathRelease(roundedRectPath);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    UIColor *color = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
+//    CGColorRef shadowColor = color.CGColor;
+//    
+//    CGContextSetShadowWithColor(context, CGSizeMake(0.0, 1.0), OFFSET_SHADOW, shadowColor);
+//    CGContextSetFillColorWithColor(context, shadowColor);
+//    
+//    CGPathRef roundedRectPath = createRoundedRectForRect(CGRectInset(rect, OFFSET_SHADOW, OFFSET_SHADOW), 6.0);
+//    
+//    for (int i = 0 ; i < 6 ; i ++)
+//    {
+//        CGContextAddPath(context, roundedRectPath);
+//        CGContextFillPath(context);
+//    }
+//    CGPathRelease(roundedRectPath);
 }
 
 @end

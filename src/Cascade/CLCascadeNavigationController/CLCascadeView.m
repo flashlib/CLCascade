@@ -162,9 +162,9 @@
     
     void (^animBlock)(void) = ^{
         // set new page frame aimate
-        [newPageController viewWillAppear:animated];    
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [newPageController viewWillAppear:animated];    
         [newPage setFrame: frame];
-        [newPageController viewDidAppear:animated]; 
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [newPageController viewDidAppear:animated]; 
     };
     
     // animation, from left to right
@@ -237,6 +237,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) popPageAtIndex:(NSInteger)index animated:(BOOL)animated {
+    if (_pages.count == 0 || index > _pages.count) return; // Seems to have a bug on it
+
     // get item at index
     __unsafe_unretained id item = [_pages objectAtIndex:index];
     
@@ -270,6 +272,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void) popAllPagesAnimated:(BOOL)animated {
+    if (_pages.count == 0) return; // Seems to have a bug on it
+    
     // index of last page
     NSUInteger index = [_pages count] - 1;
     // pop page from back
@@ -311,15 +315,15 @@
                 // calculete direction of movement (if move left add view at index 0 else add at last position)
                 if ((_scrollView.contentOffset.x + _scrollView.contentInset.left) > index * _pageWidth) {
                     // add subview
-                    [viewC viewWillAppear:NO];
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [viewC viewWillAppear:NO];
                     [_scrollView insertSubview:view atIndex:0];
-                    [viewC viewDidAppear:NO];
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [viewC viewDidAppear:NO];
                 }
                 else {
                     // add subview
-                    [viewC viewWillAppear:NO];
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [viewC viewWillAppear:NO];
                     [_scrollView addSubview:view];
-                    [viewC viewDidAppear:NO];
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [viewC viewDidAppear:NO];
                 }
                 
                 
@@ -653,9 +657,9 @@
     // if page exist
     if (index != NSNotFound) {
         // remove from superview
-        [page viewWillDisappear:NO];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [page viewWillDisappear:NO];
         [page.clContainerView removeFromSuperview];
-        [page viewDidDisappear:NO];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 5.0) [page viewDidDisappear:NO];
         
         // send message to delegate
         [self didUnloadPage:page];        
@@ -767,6 +771,7 @@
     if ((firstVisiblePageIndex == 0) && (-_scrollView.contentOffset.x >= _scrollView.contentInset.left)) {
         // get page at index
         id item = [_pages objectAtIndex: firstVisiblePageIndex];
+        if (item == [NSNull null]) item = nil;
         UIView* view = ((UIViewController*)item).clContainerView;
         
         CGRect rect = [view frame];
@@ -783,7 +788,8 @@
         if ([self pageExistAtIndex: i]) {
             // get page at index
             id item = [_pages objectAtIndex: i];
-            
+            if (item == [NSNull null]) item = nil;
+
             if (i == firstVisiblePageIndex) {
                 
 //                if (item == [NSNull null]) {
