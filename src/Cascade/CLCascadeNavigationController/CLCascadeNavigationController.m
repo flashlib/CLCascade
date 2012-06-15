@@ -82,6 +82,14 @@
 	return YES;
 }
 
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    for (UIViewController *controller in _viewControllers)
+        [controller willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
     
@@ -206,7 +214,7 @@
     if (index > [_viewControllers count] - 1) return;
     
     UIViewController<CLViewControllerDelegate>* controller = [_viewControllers objectAtIndex: index];
-    if ([controller respondsToSelector:@selector(pageDidAppear)]) {
+    if ([controller respondsToSelector:@selector(pageDidDisappear)]) {
         [controller pageDidDisappear];
     }
 
