@@ -305,10 +305,9 @@
             if (view != nil) {
                 //preventive, set frame
                 CGSize pageSize = [self calculatePageSize: viewC];
-                CGRect pageFrame = CGRectMake(index * _pageWidth, 0.0f, pageSize.width, pageSize.height);
+                CGRect pageFrame = CGRectMake((index-[self indexOfFirstVisiblePage]) * _pageWidth, 0.0f, pageSize.width, pageSize.height);
                 [view setFrame: pageFrame];
                 [viewC.view setFrame: pageFrame];
-
                 // replace in array of pages
                 [_pages replaceObjectAtIndex:index withObject:viewC];
 
