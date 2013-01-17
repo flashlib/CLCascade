@@ -90,11 +90,15 @@
     if ([_cascadeNavigationController respondsToSelector:@selector(willAnimateRotationToInterfaceOrientation:duration:)]) {
         [_cascadeNavigationController willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
     }
+    if ([_categoriesViewController respondsToSelector:@selector(willAnimateRotationToInterfaceOrientation:duration:)]) {
+        [_categoriesViewController willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
+    }
 }
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [_cascadeNavigationController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [_categoriesViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [(CLSplitCascadeView*)self.view setIsRotating:NO];
 }
 #pragma mark - Present Controller
